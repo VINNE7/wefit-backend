@@ -1,0 +1,48 @@
+// Run npx prisma generate upon any schema model change to build prisma/client with the models
+generator client {
+  provider = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-1.1.x"]
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Address {
+  id            Int        @id @default(autoincrement())
+  zipcode       String 
+  street        String
+  number        String // because it can be addressed as S/N
+  complement    String?
+  city          String
+  neighbourhood String
+  state         String
+  Customer      Customer?
+  createdAt DateTime @default(now())
+  updatedAt DateTime? @updatedAt
+}
+
+model Customer {
+  id        String       @id @default(uuid())
+  document  String       @unique
+  name      String
+  password String 
+  cellphone String?
+  tellphone String?
+  email     String
+  address   Address      @relation(fields: [addressId], references: [id])
+  addressId Int          @unique
+  type      CustomerType
+  createdAt DateTime @default(now())
+  updatedAt DateTime? @updatedAt
+}
+
+enum CustomerType {
+  PJ
+  PF
+}
+
+enum EntityType {
+  CUSTOMER
+}
