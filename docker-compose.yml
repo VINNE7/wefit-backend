@@ -13,12 +13,19 @@ services:
       - $MYSQLDB_PORT:3306
     volumes:
       - ./data/:/var/lib/mysql
+    healthcheck:
+      test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost']
+      interval: 30s
+      timeout: 15s
+      retries: 5
+      start_period: 30s
 
   wefit-backend:
     container_name: wefit-backend
     restart: always
     depends_on:
-      - mysqldb
+      mysqldb:
+        condition: service_healthy
     build:
       context: .
       dockerfile: Dockerfile
@@ -27,5 +34,5 @@ services:
     env_file:
       - .env
     volumes:
-      - .:/src/api:rw
+      - .:/src/api
     command: 'npm run start:dev'
