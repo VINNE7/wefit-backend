@@ -13,3 +13,19 @@ services:
       - $MYSQLDB_PORT:3306
     volumes:
       - ./data/:/var/lib/mysql
+
+  wefit-backend:
+    container_name: wefit-backend
+    restart: always
+    depends_on:
+      - mysqldb
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '3001:3001'
+    env_file:
+      - .env
+    volumes:
+      - .:/src/api:rw
+    command: 'npm run start:dev'
