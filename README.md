@@ -22,6 +22,10 @@ o docker-compose vai criar um container de um MySQL e um serviço para o servido
 
 Isso vai fazer com que você acesse o shell do container, para então rodar o comando que irá executar as migrations do prisma no banco de dados.
 
+### Para acessar a documentação da API, use a url:
+
+http://localhost:3001/api
+
 Depois que concluir seu teste não de enviar o seu código junto a pasta data, nela está salvo o volume do MySQL criado pelo docker.
 
 Boa sorte =)
